@@ -14,6 +14,7 @@ import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
+import Error from "components/Appointment/Error";
 
 storiesOf("Button", module)
   .addParameters({
@@ -168,8 +169,38 @@ storiesOf("Button", module)
         .addParameters({
           backgrounds: [{ name: "white", value: "#fff", default: true }]
         })
-        .add('Status', ()=> (<Status
+        .add('Status Deleting', ()=> (<Status
           message= "Deleting"
+          />
+
+        ));
+        storiesOf('Status', module)
+        .addParameters({
+          backgrounds: [{ name: "white", value: "#fff", default: true }]
+        })
+        .add('Status Saving', ()=> (<Status
+          message= "Saving"
+          />
+
+        ));
+
+        storiesOf('Error', module)
+        .addParameters({
+          backgrounds: [{ name: "white", value: "#fff", default: true }]
+        })
+        .add('Error deleting', ()=> (<Error
+          message= "Could not Delete appoinment"
+          onClose = {action("onClose")}
+          />
+
+        ));
+        storiesOf('Error', module)
+        .addParameters({
+          backgrounds: [{ name: "white", value: "#fff", default: true }]
+        })
+        .add('Error saving', ()=> (<Error
+          message= "Could not save appoinment"
+          onClose = {action("onClose")}
           />
 
         ));
