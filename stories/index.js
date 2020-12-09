@@ -11,6 +11,7 @@ import InterviewerList from "components/InterviewerList";
 import Appointment from "components/Appointment/index";
 import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
+import Show from "components/Appointment/Show";
 
 storiesOf("Button", module)
   .addParameters({
@@ -137,3 +138,15 @@ storiesOf("Button", module)
           backgrounds: [{ name: "white", value: "#fff", default: true }]
         })
         .add('Empty', ()=> (<Empty onAdd={action("onAdd")}/>));
+
+        storiesOf('Show', module)
+        .addParameters({
+          backgrounds: [{ name: "white", value: "#fff", default: true }]
+        })
+        .add('Show', () =>( 
+        <Show 
+          student="Lidia Miller-Jones"
+          interviewer={interviewer}
+          onEdit= {action("onEdit")}
+          onDelete= {action("onDelete")}/>
+        ));
