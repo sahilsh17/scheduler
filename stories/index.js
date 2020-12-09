@@ -218,6 +218,7 @@ storiesOf("Button", module)
 
         ))
         .add('Form edit', ()=> (<Form
+         student = "John Marston"
           interviewers={interviewers}
          interviewer={3}
           setInterviewer={action("setInterviewer")}
