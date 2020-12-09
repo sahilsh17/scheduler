@@ -15,6 +15,7 @@ import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
+import Form from "components/Appointment/Form";
 
 storiesOf("Button", module)
   .addParameters({
@@ -201,6 +202,27 @@ storiesOf("Button", module)
         .add('Error saving', ()=> (<Error
           message= "Could not save appoinment"
           onClose = {action("onClose")}
+          />
+
+        ));
+
+        storiesOf('Form', module)
+        .addParameters({
+          backgrounds: [{ name: "white", value: "#fff", default: true }]
+        })
+        .add('Form create', ()=> (<Form
+          interviewers={interviewers}
+          onSave ={action("onSave")}
+          onCancel = {action("onCancel")}
+          />
+
+        ))
+        .add('Form edit', ()=> (<Form
+          interviewers={interviewers}
+         interviewer={3}
+          setInterviewer={action("setInterviewer")}
+          onSave ={action("onSave")}
+          onCancel = {action("onCancel")}
           />
 
         ));
