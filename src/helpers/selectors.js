@@ -4,6 +4,7 @@ export function getAppointmentsForDay(state, day) {
   if(filterDay.length === 0) {
     return [];
   }
+  
   let appoinmentForDay = [];
     filterDay[0].appointments.forEach(AppoinmentID => {
     for(let appoinment in state.appointments) {
@@ -14,3 +15,4 @@ export function getAppointmentsForDay(state, day) {
   }) 
   return appoinmentForDay;
 } 
+
