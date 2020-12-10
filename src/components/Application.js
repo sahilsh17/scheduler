@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {getAppointmentsForDay} from "helpers/selectors";
+import { getAppointmentsForDay } from "helpers/selectors";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import axios from "axios";
+import {getInterview} from 'helpers/selectors';
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -55,29 +56,36 @@ export default function Application(props) {
         id: 5,
         time: '4:30pm'
       }
-    ]
+    ],
+    interviewers: {
+      "1": {
+        "id": 1,
+        "name": "Sylvia Palmer",
+        "avatar": "https://i.imgur.com/LpaY82x.png"
+      }
+    }
   });
-  
+
   const setDay = day => setState({ ...state, day });
   let dailyAppointments = [];
   useEffect(() => {
     Promise.all([
       axios.get('http://localhost:8001/api/days'),
       axios.get('http://localhost:8001/api/appointments'),
-
+      axios.get('http://localhost:8001/api/interviewers')
     ])
       .then((all) => {
        
-       const appointments = Object.values(all[1].data)
-        
-        setState(prev => ({ ...prev, days: all[0].data, appointments}));
-       
-        
+        const appointments = Object.values(all[1].data)
+
+        setState(prev => ({ ...prev, days: all[0].data, appointments, interviewers: all[2].data }));
+
+
       });
 
-  }, []);
-  dailyAppointments = getAppointmentsForDay(state,state.day);
-       
+  });
+  dailyAppointments = getAppointmentsForDay(state, state.day);
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -100,8 +108,14 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {
-              dailyAppointments.map((appointment) => {
-            return (<Appointment key={appointment.id} {...appointment} />) //shorthand to send all properties of object 
+          dailyAppointments.map((appointment) => {
+
+            const interview = getInterview(state, appointment.interview);
+           
+            return (<Appointment key={appointment.id}
+              id={appointment.id}
+              time={appointment.time}
+              interview={interview} />) //shorthand to send all properties of object 
           })
         }
       </section>
