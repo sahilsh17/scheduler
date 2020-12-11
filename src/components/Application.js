@@ -5,8 +5,11 @@ import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import axios from "axios";
 import {getInterview} from 'helpers/selectors';
+import {getInterviewersForDay} from 'helpers/selectors';
+
 
 export default function Application(props) {
+ 
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -77,7 +80,7 @@ export default function Application(props) {
       .then((all) => {
        
         const appointments = Object.values(all[1].data)
-
+       
         setState(prev => ({ ...prev, days: all[0].data, appointments, interviewers: all[2].data }));
 
 
@@ -85,7 +88,7 @@ export default function Application(props) {
 
   });
   dailyAppointments = getAppointmentsForDay(state, state.day);
-
+  const interviewersForday = getInterviewersForDay(state,state.day);
   return (
     <main className="layout">
       <section className="sidebar">
@@ -110,12 +113,12 @@ export default function Application(props) {
         {
           dailyAppointments.map((appointment) => {
 
-            const interview = getInterview(state, appointment.interview);
-           
+            const interview = getInterview(state, appointment.interview);           
             return (<Appointment key={appointment.id}
               id={appointment.id}
               time={appointment.time}
-              interview={interview} />) //shorthand to send all properties of object 
+              interview={interview}
+              interviewers={interviewersForday} />) //shorthand to send all properties of object 
           })
         }
       </section>
