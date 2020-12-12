@@ -20,8 +20,14 @@ export function getInterview(state,interview) {
   if(!interview) {
     return null;
   }
-  const interviewerID = interview.interviewer;
-  const interviewersObject = state.interviewers;
+  let interviewerID;
+   if(typeof interview.interviewer === 'object') {
+     interviewerID = interview.interviewer.id;
+   } else {
+    interviewerID = interview.interviewer;
+   }
+   
+    const interviewersObject = state.interviewers;
   
   for(let interviewer in interviewersObject) {
   
