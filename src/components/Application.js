@@ -4,22 +4,21 @@ import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import axios from "axios";
-import {getInterview} from 'helpers/selectors';
-import {getInterviewersForDay} from 'helpers/selectors';
+import { getInterview } from 'helpers/selectors';
+import { getInterviewersForDay } from 'helpers/selectors';
 
 
 export default function Application(props) {
- 
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     // you may put the line below, but will have to remove/comment hardcoded appointments variable
-    appointments: [
-      {
+    appointments: {
+      "1": {
         id: 1,
         time: "12pm",
       },
-      {
+      "2": {
         id: 2,
         time: "1pm",
         interview: {
@@ -31,7 +30,7 @@ export default function Application(props) {
           }
         }
       },
-      {
+      "3": {
         id: 3,
         time: '3pm',
         interview: {
@@ -43,7 +42,7 @@ export default function Application(props) {
           }
         }
       },
-      {
+      "4": {
         id: 4,
         time: "4pm",
         interview: {
@@ -55,11 +54,11 @@ export default function Application(props) {
           }
         }
       },
-      {
+      "5": {
         id: 5,
         time: '4:30pm'
       }
-    ],
+    },
     interviewers: {
       "1": {
         "id": 1,
@@ -68,6 +67,23 @@ export default function Application(props) {
       }
     }
   });
+  function bookInterview(id, interview) {
+    return axios.put(`/api/appointments/${id}`, {
+      interview: interview
+    })
+      .then(() => {
+        const appointment = {
+          ...state.appointments[id - 1],
+          interview: { ...interview }
+        };
+        const appointments = {
+          ...state.appointments,
+          [id - 1]: appointment
+        };
+
+        setState({ ...state, appointments });
+      })
+  }
 
   const setDay = day => setState({ ...state, day });
   let dailyAppointments = [];
@@ -78,17 +94,16 @@ export default function Application(props) {
       axios.get('http://localhost:8001/api/interviewers')
     ])
       .then((all) => {
-       
         const appointments = Object.values(all[1].data)
-       
+
         setState(prev => ({ ...prev, days: all[0].data, appointments, interviewers: all[2].data }));
 
 
       });
 
-  });
+  }, [state.day]);
   dailyAppointments = getAppointmentsForDay(state, state.day);
-  const interviewersForday = getInterviewersForDay(state,state.day);
+  const interviewersForday = getInterviewersForDay(state, state.day);
   return (
     <main className="layout">
       <section className="sidebar">
@@ -113,12 +128,14 @@ export default function Application(props) {
         {
           dailyAppointments.map((appointment) => {
 
-            const interview = getInterview(state, appointment.interview);           
+            const interview = getInterview(state, appointment.interview);
+            console.log(interview);
             return (<Appointment key={appointment.id}
               id={appointment.id}
               time={appointment.time}
               interview={interview}
-              interviewers={interviewersForday} />) //shorthand to send all properties of object 
+              interviewers={interviewersForday}
+              bookInterview={bookInterview} />) //shorthand to send all properties of object 
           })
         }
       </section>
