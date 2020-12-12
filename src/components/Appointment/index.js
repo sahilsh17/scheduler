@@ -6,12 +6,15 @@ import Empty from "components/Appointment/Empty";
 import useVisualMode from "hooks/useVisualMode";
 import Form from "components/Appointment/Form";
 import Status from "components/Appointment/Status";
+import Confirm from "components/Appointment/Confirm";
 
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
   const SAVING = 'SAVING';
+  const DELETING = 'DELETING';
+  const CONFIRM = 'CONFIRM';
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -23,23 +26,34 @@ export default function Appointment(props) {
     };
     transition('SAVING');
     props.bookInterview(props.id,interview)
-    .then(()=>{transition("SHOW");})
+    .then(()=>{transition("SHOW");});
     
+  }
+
+  function Delete(){
+    const interview = null;
+    transition('DELETING');
+    console.log(props.id);
+    props.cancelInterview(props.id, interview)
+    .then(()=>{transition("EMPTY");});
   }
   return (
     
     <Fragment>
       {mode === SAVING && <Fragment><Header time={props.time} /><Status message='SAVING' /></Fragment>}
+      {mode === DELETING && <Fragment><Header time={props.time} /><Status message='Deleting' /></Fragment>}
+      {mode === CONFIRM && <Fragment><Header time={props.time} /><Confirm message="Are you sure you want to delete" onConfirm = {Delete}          onCancel={()=>transition('SHOW')}  /></Fragment>}
+
       {mode === EMPTY && <Fragment><Header time={props.time} /><Empty onAdd={() => transition('CREATE')} /></Fragment>}
       {mode === SHOW && (
         <Fragment><Header time={props.time} /><Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-         
+          onDelete = {()=> {transition('CONFIRM')}}
         /> </Fragment>
       )}
       {mode === CREATE && (
-        <Fragment><Header time={props.time} /><Form onSave={save}  onCancel={()=> back()}  interviewers ={props.interviewers} /> </Fragment>
+        <Fragment><Header time={props.time} /><Form  onSave={save}  onCancel={()=> back()}  interviewers ={props.interviewers} /> </Fragment>
       )}
     </Fragment>
 
