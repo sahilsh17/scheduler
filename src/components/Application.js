@@ -84,6 +84,26 @@ export default function Application(props) {
         setState({ ...state, appointments });
       })
   }
+ function cancelInterview(id, interview) {
+   
+    return axios.delete(`/api/appointments/${id}`, { 
+       interview
+   })
+   .then(()=> {
+    const appointment = {
+      ...state.appointments[id - 1],
+      interview: {...interview}
+    };
+    const appointments = {
+      ...state.appointments,
+      [id - 1]: appointment
+    };
+
+    setState({ ...state, appointments });
+    console.log(state);
+   })
+ }
+ console.log(state);
 
   const setDay = day => setState({ ...state, day });
   let dailyAppointments = [];
@@ -135,7 +155,8 @@ export default function Application(props) {
               time={appointment.time}
               interview={interview}
               interviewers={interviewersForday}
-              bookInterview={bookInterview} />) //shorthand to send all properties of object 
+              bookInterview={bookInterview}
+              cancelInterview = {cancelInterview} />) //shorthand to send all properties of object 
           })
         }
       </section>
