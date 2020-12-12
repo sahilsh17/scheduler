@@ -15,6 +15,8 @@ export default function Appointment(props) {
   const SAVING = 'SAVING';
   const DELETING = 'DELETING';
   const CONFIRM = 'CONFIRM';
+  const EDIT = "EDIT";
+
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -50,11 +52,14 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete = {()=> {transition('CONFIRM')}}
+          onEdit = {()=>transition('EDIT')}
         /> </Fragment>
       )}
       {mode === CREATE && (
         <Fragment><Header time={props.time} /><Form  onSave={save}  onCancel={()=> back()}  interviewers ={props.interviewers} /> </Fragment>
       )}
+      {mode === EDIT && <Fragment><Header time={props.time} /><Form onSave={save} onCancel={()=> back()} name={props.interview.student} interviewer={props.interview.interviewer.id} interviewers ={props.interviewers}/></Fragment>}
+
     </Fragment>
 
   )
