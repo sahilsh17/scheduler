@@ -8,12 +8,12 @@ export default function useVisualMode(initial) {
   function transition(newValue,replace) {
    if(replace) {
      history.pop();
-     history.push(newValue);
      setMode(newValue);
+     setHistory([...history,newValue]);
    } else {
-   history.push(newValue);
    setMode(newValue);
-   }
+   setHistory(([...history,newValue]));
+  }
   }
   function back() {
     if(history.length < 2) {
@@ -21,6 +21,8 @@ export default function useVisualMode(initial) {
     }
    history.pop();
     setMode(history.slice(-1)[0]);
+
+    // setHistory(prev => ([...prev, mode]));
   }
   return {mode,transition,back};
 }
