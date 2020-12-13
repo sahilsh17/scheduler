@@ -5,15 +5,17 @@ export function getAppointmentsForDay(state, day) {
     return [];
   }
   
-  let appoinmentForDay = [];
+  let appointmentForDay = [];
+    let appointments = state.appointments;
     filterDay[0].appointments.forEach(AppoinmentID => {
-    for(let appoinment in state.appointments) {
-      if (AppoinmentID == appoinment) {
-        appoinmentForDay.push(state.appointments[appoinment]);
+    for(let appointment in appointments) {
+
+      if (AppoinmentID == appointments[appointment].id) {
+        appointmentForDay.push(appointments[appointment]);
       }
     }
   }) 
-  return appoinmentForDay;
+  return appointmentForDay;
 } 
 
 export function getInterview(state,interview) {
