@@ -32,7 +32,9 @@ function validate() {
         type="text"
         placeholder="Enter Student Name"
         value ={name}
-        onChange = {(event) =>setName(event.target.value)}
+        onChange = {(event) =>{
+          setError("");
+          setName(event.target.value)}}
         data-testid="student-name-input"
         /*
           This must be a controlled component
