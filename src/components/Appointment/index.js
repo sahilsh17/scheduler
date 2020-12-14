@@ -32,7 +32,10 @@ export default function Appointment(props) {
     transition('SAVING');
     props.bookInterview(props.id, interview)
       .then(() => transition("SHOW"))
-      .catch(() => transition("ERROR_SAVING"));
+      .catch((err) => { 
+       console.log(err);
+        transition("ERROR_SAVING");
+      })
   }
 
   function Delete() {
@@ -69,11 +72,6 @@ export default function Appointment(props) {
 
   )
 }
-//  if(props.interview) {
-//    return (<Fragment><Header time={props.time}/><Show student={props.interview.student} interviewer={props.interview.interviewer}/></Fragment>);
-//  }
-
-//  return (<Fragment><Header time={props.time} /><Empty/></Fragment>)
 
 
 
