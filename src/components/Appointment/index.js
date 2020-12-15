@@ -34,7 +34,7 @@ export default function Appointment(props) {
       .then(() => transition("SHOW"))
       .catch((err) => { 
        console.log(err);
-        transition("ERROR_SAVING");
+        transition("ERROR_SAVING", true);
       })
   }
 
@@ -48,7 +48,7 @@ export default function Appointment(props) {
   }
   return (
 
-    <Fragment>
+    <article data-testid="appointment">
       {mode === SAVING && <Fragment><Header time={props.time} /><Status message='SAVING' /></Fragment>}
       {mode === DELETING && <Fragment><Header time={props.time} /><Status message='Deleting' /></Fragment>}
       {mode === CONFIRM && <Fragment><Header time={props.time} /><Confirm message="Are you sure you want to delete" onConfirm={Delete} onCancel={() => transition('SHOW')} /></Fragment>}
@@ -68,7 +68,7 @@ export default function Appointment(props) {
       )}
       {mode === EDIT && <Fragment><Header time={props.time} /><Form onSave={save} onCancel={() => back()} name={props.interview.student} interviewer={props.interview.interviewer.id} interviewers={props.interviewers} /></Fragment>}
 
-    </Fragment>
+    </article>
 
   )
 }
