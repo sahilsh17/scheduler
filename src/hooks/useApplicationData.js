@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState ,  useEffect} from 'react';
 import axios from "axios";
 
 export default function useApplicationData(newState) {
@@ -61,7 +61,21 @@ export default function useApplicationData(newState) {
     }
   });
   const setDay = day => setState({ ...state, day });
+  useEffect(() => {
+    Promise.all([
+      axios.get('http://localhost:8001/api/days'),
+      axios.get('http://localhost:8001/api/appointments'),
+      axios.get('http://localhost:8001/api/interviewers')
+    ])
+      .then((all) => {
+        const appointments = Object.values(all[1].data)
 
+        setState(prev => ({ ...prev, days: all[0].data, appointments, interviewers: all[2].data }));
+
+
+      });
+
+  }, [state.day]);
   function updateSpots(day, change) {
     const id = day.id;
     const newDays = [...state.days]
