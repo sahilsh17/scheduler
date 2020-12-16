@@ -76,7 +76,7 @@ export default function useApplicationData(newState) {
       });
 
   }, [state.day]);
-  function updateSpots(day, change) {
+  function updateSpotsNumber(day, change) {
     const id = day.id;
     const newDays = [...state.days]
     if (change) {
@@ -88,7 +88,7 @@ export default function useApplicationData(newState) {
     }
     
   }
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview,updateSpot) {
     return axios.put(`/api/appointments/${id}`, {
       interview: interview
     })
@@ -101,12 +101,14 @@ export default function useApplicationData(newState) {
           ...state.appointments,
           [id - 1]: appointment
         };
-
+        
         setState({ ...state, appointments });
         const findDay = state.days.find(day => {
           return day.name === state.day;
         });
-        updateSpots(findDay, true);
+        if(updateSpot) {
+        updateSpotsNumber(findDay, true);
+        }
       })
   }
   function cancelInterview(id, interview) {
@@ -128,7 +130,7 @@ export default function useApplicationData(newState) {
         const findDay = state.days.find(day => {
           return day.name === state.day;
         });
-        updateSpots(findDay, false);
+        updateSpotsNumber(findDay, false);
       })
   }
   return { state, setDay, setState, bookInterview, cancelInterview };
