@@ -29,8 +29,10 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
+    const updateSpot = mode === CREATE? true:false;
+  
     transition('SAVING');
-    props.bookInterview(props.id, interview)
+    props.bookInterview(props.id, interview, updateSpot)
       .then(() => transition("SHOW"))
       .catch((err) => { 
        console.log(err);
