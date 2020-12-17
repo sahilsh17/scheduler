@@ -24,5 +24,7 @@ npm run storybook
 ## Screenshots
 
 !["Scheduler appointments page"](https://github.com/sahilsh17/scheduler/blob/master/docs/scheduler-appointments.png?raw=true)
+
 !["User creates an interview in the form"](https://github.com/sahilsh17/scheduler/blob/master/docs/appointment-form.png?raw=true)
+
 !["User Deletes an appointment"](https://github.com/sahilsh17/scheduler/blob/master/docs/appointment-delete.png?raw=true)
