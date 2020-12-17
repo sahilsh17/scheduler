@@ -8,7 +8,6 @@ export default function useVisualMode(initial) {
   function transition(newValue, replace) {
     const newHistory = [...history];
     if (replace) {
-
       newHistory.pop();
       setMode(newValue);
       setHistory([...newHistory, newValue]);
@@ -23,6 +22,7 @@ export default function useVisualMode(initial) {
     }
     const newHistory = [...history];
     newHistory.pop();
+
     setMode(newHistory[newHistory.length - 1]);
 
     setHistory(newHistory);
