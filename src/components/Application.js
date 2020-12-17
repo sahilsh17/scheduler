@@ -16,7 +16,7 @@ export default function Application(props) {
   } = useApplicationData();
 
   let dailyAppointments = [];
-  
+
   dailyAppointments = getAppointmentsForDay(state, state.day);
   const interviewersForday = getInterviewersForDay(state, state.day);
   return (
@@ -49,7 +49,7 @@ export default function Application(props) {
               interview={interview}
               interviewers={interviewersForday}
               bookInterview={bookInterview}
-              cancelInterview = {cancelInterview} />) //shorthand to send all properties of object 
+              cancelInterview={cancelInterview} />) //shorthand to send all properties of object 
           })
         }
       </section>

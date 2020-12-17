@@ -1,4 +1,4 @@
-import { useState ,  useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 
 export default function useApplicationData(newState) {
@@ -81,14 +81,14 @@ export default function useApplicationData(newState) {
     const newDays = [...state.days]
     if (change) {
       newDays[id - 1].spots -= 1;
-      setState(prev => ({ ...prev,newDays}));
+      setState(prev => ({ ...prev, newDays }));
     } else {
       newDays[id - 1].spots += 1;
-      setState(prev => ({ ...prev,newDays}));
+      setState(prev => ({ ...prev, newDays }));
     }
-    
+
   }
-  function bookInterview(id, interview,updateSpot) {
+  function bookInterview(id, interview, updateSpot) {
     return axios.put(`/api/appointments/${id}`, {
       interview: interview
     })
@@ -101,13 +101,13 @@ export default function useApplicationData(newState) {
           ...state.appointments,
           [id - 1]: appointment
         };
-        
+
         setState({ ...state, appointments });
         const findDay = state.days.find(day => {
           return day.name === state.day;
         });
-        if(updateSpot) {
-        updateSpotsNumber(findDay, true);
+        if (updateSpot) {
+          updateSpotsNumber(findDay, true);
         }
       })
   }

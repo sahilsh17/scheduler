@@ -29,24 +29,24 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    const updateSpot = mode === CREATE? true:false;
-  
+    const updateSpot = mode === CREATE ? true : false;
+
     transition('SAVING');
     props.bookInterview(props.id, interview, updateSpot)
       .then(() => transition("SHOW"))
-      .catch((err) => { 
-       console.log(err);
+      .catch((err) => {
+        console.log(err);
         transition("ERROR_SAVING", true);
       })
   }
 
   function Delete() {
     const interview = null;
-    transition('DELETING',true);
+    transition('DELETING', true);
     console.log(props.id);
     props.cancelInterview(props.id, interview)
       .then(() => { transition("EMPTY"); })
-      .catch(() => transition('ERROR_DELETING',true));
+      .catch(() => transition('ERROR_DELETING', true));
   }
   return (
 
@@ -54,7 +54,7 @@ export default function Appointment(props) {
       {mode === SAVING && <Fragment><Header time={props.time} /><Status message='SAVING' /></Fragment>}
       {mode === DELETING && <Fragment><Header time={props.time} /><Status message='Deleting' /></Fragment>}
       {mode === CONFIRM && <Fragment><Header time={props.time} /><Confirm message="Are you sure you want to delete" onConfirm={Delete} onCancel={() => transition('SHOW')} /></Fragment>}
-      {mode === ERROR_SAVING && <Fragment><Header time={props.time} /><Error onClose={() => back()}message='ERROR SAVING' /></Fragment>}
+      {mode === ERROR_SAVING && <Fragment><Header time={props.time} /><Error onClose={() => back()} message='ERROR SAVING' /></Fragment>}
       {mode === ERROR_DELETING && <Fragment><Header time={props.time} /><Error onClose={() => back()} message='ERROR DELETING' /></Fragment>}
       {mode === EMPTY && <Fragment><Header time={props.time} /><Empty onAdd={() => transition('CREATE')} /></Fragment>}
       {mode === SHOW && (

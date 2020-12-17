@@ -2,11 +2,11 @@ import React from "react";
 import "components/DayListItem.scss";
 import classNames from "classnames";
 export default function DayListItem(props) {
-  const DayListItemClass = classNames('day-list__item --selected',{
-   'day-list__item--selected': props.selected,
-   'day-list__item--full': props.spots === 0
+  const DayListItemClass = classNames('day-list__item --selected', {
+    'day-list__item--selected': props.selected,
+    'day-list__item--full': props.spots === 0
   });
-  const formatSpots = function(spots) {
+  const formatSpots = function (spots) {
     if (spots === 0) {
       return 'no spots remaining'
     } else if (spots === 1) {
