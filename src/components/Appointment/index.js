@@ -23,12 +23,15 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-
+  
+  // creates an interview object and then calls bookInterview with interview object and id
   function save(name, interviewer) {
     const interview = {
       student: name,
       interviewer
     };
+
+    //updateSpot will be true when in CREATE MODE and false in EDIT MODE
     const updateSpot = mode === CREATE ? true : false;
 
     transition('SAVING');
@@ -36,11 +39,10 @@ export default function Appointment(props) {
       .then(() => transition("SHOW"))
       .catch(() => transition("ERROR_SAVING"));
   }
-
+  // Deletes an interview by calling cancelInterview function 
   function Delete() {
     const interview = null;
     transition('DELETING', true);
-    console.log(props.id);
     props.cancelInterview(props.id, interview)
       .then(() => { transition("EMPTY"); })
       .catch(() => transition('ERROR_DELETING', true));
@@ -49,11 +51,17 @@ export default function Appointment(props) {
 
     <article data-testid="appointment">
       {mode === SAVING && <Fragment><Header time={props.time} /><Status message='SAVING' /></Fragment>}
+
       {mode === DELETING && <Fragment><Header time={props.time} /><Status message='Deleting' /></Fragment>}
+
       {mode === CONFIRM && <Fragment><Header time={props.time} /><Confirm message="Are you sure you want to delete" onConfirm={Delete} onCancel={() => back()} /></Fragment>}
+
       {mode === ERROR_SAVING && <Fragment><Header time={props.time} /><Error onClose={() => back()} message='ERROR SAVING' /></Fragment>}
+
       {mode === ERROR_DELETING && <Fragment><Header time={props.time} /><Error onClose={() => back()} message='ERROR DELETING' /></Fragment>}
+
       {mode === EMPTY && <Fragment><Header time={props.time} /><Empty onAdd={() => transition('CREATE')} /></Fragment>}
+
       {mode === SHOW && (
         <Fragment><Header time={props.time} /><Show
           student={props.interview.student}
@@ -62,9 +70,11 @@ export default function Appointment(props) {
           onEdit={() => transition('EDIT')}
         /> </Fragment>
       )}
+
       {mode === CREATE && (
         <Fragment><Header time={props.time} /><Form onSave={save} onCancel={() => back()} interviewers={props.interviewers} /> </Fragment>
       )}
+
       {mode === EDIT && <Fragment><Header time={props.time} /><Form onSave={save} onCancel={() => back()} name={props.interview.student} interviewer={props.interview.interviewer.id} interviewers={props.interviewers} /></Fragment>}
 
     </article>

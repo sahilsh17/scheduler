@@ -5,7 +5,7 @@ export default function useApplicationData(newState) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    // you may put the line below, but will have to remove/comment hardcoded appointments variable
+
     appointments: {
       "1": {
         id: 1,
@@ -60,7 +60,10 @@ export default function useApplicationData(newState) {
       }
     }
   });
+
   const setDay = day => setState({ ...state, day });
+
+
   useEffect(() => {
     Promise.all([
       axios.get('http://localhost:8001/api/days'),
@@ -76,6 +79,8 @@ export default function useApplicationData(newState) {
       });
 
   }, [state.day]);
+
+  //updateSpotsNumber function accepts the day object for which the number of spots will be updated and change which is used to either increase or decrease the number of spots
   function updateSpotsNumber(day, change) {
     const id = day.id;
     const newDays = [...state.days]
@@ -88,6 +93,8 @@ export default function useApplicationData(newState) {
     }
 
   }
+
+  //bookInterview function saves an interview in database by making a put request to database server
   function bookInterview(id, interview, updateSpot) {
     return axios.put(`/api/appointments/${id}`, {
       interview: interview
@@ -103,14 +110,20 @@ export default function useApplicationData(newState) {
         };
 
         setState({ ...state, appointments });
+
+        //finding the day object in days array for which the number of spots will be updated
         const findDay = state.days.find(day => {
           return day.name === state.day;
         });
+
+        //updateSpot will be true if user creates a new appointment, and will be false if user edits the appointment, so number of spots updates only when booking a new appointment
         if (updateSpot) {
           updateSpotsNumber(findDay, true);
         }
       })
   }
+
+  // cancelInterview function makes a delete request to delete the interview and then update spots 
   function cancelInterview(id, interview) {
 
     return axios.delete(`/api/appointments/${id}`, {

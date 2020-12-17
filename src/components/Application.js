@@ -17,7 +17,9 @@ export default function Application(props) {
 
   let dailyAppointments = [];
 
+ // dailyAppointments receives array of appointments for a day by calling getAppointmentsForDay in selectors
   dailyAppointments = getAppointmentsForDay(state, state.day);
+
   const interviewersForday = getInterviewersForDay(state, state.day);
   return (
     <main className="layout">
@@ -42,6 +44,7 @@ export default function Application(props) {
       <section className="schedule">
         {
           dailyAppointments.map((appointment) => {
+            //interview receives interview object by calling getInterview function in selectors file
             const interview = getInterview(state, appointment.interview);
             return (<Appointment key={appointment.id}
               id={appointment.id}
@@ -49,7 +52,7 @@ export default function Application(props) {
               interview={interview}
               interviewers={interviewersForday}
               bookInterview={bookInterview}
-              cancelInterview={cancelInterview} />) //shorthand to send all properties of object 
+              cancelInterview={cancelInterview} />)  
           })
         }
       </section>
